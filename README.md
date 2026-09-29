@@ -212,9 +212,7 @@ npm install
 npm run dev
 ```
 
-The backend runs on http://localhost:8000 and the frontend on http://localhost:5173.
-
-Or run everything with Docker:
+run everything with Docker:
 
 ```
 docker-compose up --build
