@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: Inter, "Noto Sans Devanagari", system-ui, sans-serif;
+  background: #f5f7fb;
+  color: #172033;
+}
+
+h1, h2, h3, .font-display {
+  font-family: Sora, "Noto Sans Devanagari", sans-serif;
+}
+
+.leaflet-container {
+  z-index: 0;
+  height: 100%;
+  width: 100%;
+  border-radius: 1rem;
+}
+
+html.dark body {
+  background: #0e241c;
+  color: #e7f3ee;
+}
+
+html.dark .bg-white { background-color: #17362c; }
+html.dark .bg-canvas { background-color: #0e241c; }
+html.dark .text-ink { color: #e7f3ee; }
+html.dark .text-muted { color: #b7cfc6; }
+html.dark .border-line { border-color: #2a5346; }
+html.dark input,
+html.dark select,
+html.dark textarea {
+  background: #10281f;
+  color: #e7f3ee;
+  border-color: #2a5346;
+}
+
+.ticker-track {
+  animation: ticker 36s linear infinite;
+}
+
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(16px);
+}
+
+html.dark .glass {
+  background: rgba(18, 61, 49, 0.72);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

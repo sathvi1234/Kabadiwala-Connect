@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kabadiwala Connect — PS 26229 Prototype</title>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--text:#172033;--muted:#687386;--primary:#176b52;--primary2:#22956f;--line:#e5e9f0;--warn:#d88900;--danger:#c93b3b;--shadow:0 8px 25px rgba(25,35,55,.07)}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--text)}
+.app{display:flex;min-height:100vh}.side{width:255px;background:#123d31;color:#fff;padding:20px 14px;position:fixed;inset:0 auto 0 0;overflow:auto}.brand{font-size:20px;font-weight:800;padding:8px 10px 22px}.brand small{display:block;font-size:11px;font-weight:500;opacity:.65;margin-top:4px}.nav button{width:100%;border:0;background:transparent;color:#dcebe6;padding:12px 13px;border-radius:10px;text-align:left;cursor:pointer;font-size:14px;margin:2px 0}.nav button:hover,.nav button.active{background:#1d5c4b;color:#fff}.nav .section{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#8fb4a8;padding:16px 13px 6px}.main{margin-left:255px;width:calc(100% - 255px);padding:24px 30px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}.top h1{margin:0;font-size:26px}.pill{padding:7px 10px;border-radius:20px;background:#e8f6f0;color:var(--primary);font-size:12px;font-weight:700}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.card{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:18px;box-shadow:var(--shadow)}.stat .label{color:var(--muted);font-size:12px}.stat .num{font-size:26px;font-weight:800;margin:7px 0}.stat .trend{font-size:12px;color:var(--primary)}.two{display:grid;grid-template-columns:1.5fr 1fr;gap:16px;margin-top:16px}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}.card h3{margin:0 0 14px;font-size:16px}.muted{color:var(--muted);font-size:13px}.table-wrap{overflow:auto}.table{width:100%;border-collapse:collapse;font-size:13px}.table th,.table td{padding:11px 9px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}.table th{color:var(--muted);font-weight:600}.badge{display:inline-block;padding:5px 8px;border-radius:12px;font-size:11px;font-weight:700}.ok{background:#e6f6ef;color:#13724f}.pending{background:#fff3d9;color:#966000}.danger{background:#fdeaea;color:#a83232}.blue{background:#e8f0ff;color:#315fa8}.btn{border:0;border-radius:9px;padding:9px 13px;background:var(--primary);color:white;cursor:pointer;font-weight:700;font-size:12px}.btn.secondary{background:#edf2f0;color:#245f4e}.btn.warn{background:#eaa72b}.btn.danger{background:#c93b3b}.btn:disabled{opacity:.5}.actions{display:flex;gap:8px;flex-wrap:wrap}.bar{height:9px;background:#edf1f4;border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:var(--primary2);border-radius:9px}.price{font-size:24px;font-weight:800}.input,.select,.textarea{width:100%;padding:10px;border:1px solid #dce2ea;border-radius:9px;background:#fff;outline:none}.formgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}.full{grid-column:1/-1}.page{display:none}.page.active{display:block}.notice{padding:12px;border-radius:10px;background:#f0f7f4;border:1px solid #d6ebe3;font-size:13px}.timeline{border-left:2px solid #dbe9e4;margin-left:8px;padding-left:18px}.event{position:relative;margin:0 0 17px}.event:before{content:"";width:9px;height:9px;background:var(--primary);border-radius:50%;position:absolute;left:-24px;top:4px}.map{height:260px;border-radius:12px;background:linear-gradient(135deg,#dfeee8,#eef3e9);position:relative;overflow:hidden}.map:before{content:"";position:absolute;inset:35px 80px;transform:rotate(-18deg);border:7px solid #c8d7c9;border-left-color:transparent;border-right-color:transparent}.pin{position:absolute;background:#c93b3b;color:#fff;border-radius:50% 50% 50% 0;transform:rotate(-45deg);width:24px;height:24px}.pin span{transform:rotate(45deg);display:block;text-align:center;font-size:10px;margin-top:5px}.search{display:flex;gap:8px;margin-bottom:12px}.search input{flex:1}.kpi{font-size:11px;color:var(--muted);margin-top:4px}.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.feature{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fff}.feature b{font-size:13px}.feature p{font-size:11px;color:var(--muted);margin:7px 0 0}.toast{position:fixed;right:20px;bottom:20px;background:#173f33;color:#fff;padding:12px 16px;border-radius:10px;display:none;z-index:10}.qrbox{display:flex;gap:20px;align-items:center}.qr{width:120px;height:120px}.voice{display:flex;gap:8px;align-items:center}.small{font-size:11px}.lang{background:#fff;color:#123d31;border:0;padding:7px;border-radius:7px}.footer{font-size:11px;color:#7b8492;margin-top:22px}
+@media(max-width:950px){.side{width:210px}.main{margin-left:210px;width:calc(100% - 210px);padding:18px}.grid{grid-template-columns:repeat(2,1fr)}.two,.three{grid-template-columns:1fr}.feature-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){.side{position:relative;width:100%;height:auto}.app{display:block}.main{margin:0;width:100%}.grid,.formgrid,.feature-grid{grid-template-columns:1fr}.top{align-items:flex-start;gap:10px;flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side">
+<div class="brand">♻️ Kabadiwala Connect<small>SIH 2026 • PS 26229 prototype</small></div>
+<div class="nav">
+<div class="section">Main</div>
+<button class="active" data-page="dashboard">▦ Dashboard</button>
+<button data-page="collectors">♙ Collectors</button>
+<button data-page="lots">▣ Digital Lots</button>
+<button data-page="recyclers">♻ Recyclers</button>
+<button data-page="prices">₹ Prices & Trends</button>
+<button data-page="pickups">⌖ Pickup Scheduling</button>
+<button data-page="transactions">▤ Transactions</button>
+<div class="section">AI & Safety</div>
+<button data-page="ai">✦ AI Features</button>
+<button data-page="safety">⚠ Safety & Voice</button>
+<div class="section">Management</div>
+<button data-page="analytics">◒ Analytics & Impact</button>
+<button data-page="admin">⚙ Admin</button>
+<button data-page="settings">☷ Settings</button>
+</div>
+<div class="footer">Demo data only • No real payments</div>
+</aside>
+<main class="main">
+<div class="top"><div><h1 id="title">Dashboard</h1><div class="muted">Collector → Pickup → Handover → Recycler → Processing</div></div><div class="actions"><select class="lang" id="lang"><option>English</option><option>हिन्दी</option><option>मराठी</option></select><span class="pill">● System Online</span></div></div>
+
+<section id="dashboard" class="page active">
+<div class="grid">
+<div class="card stat"><div class="label">Active Collectors</div><div class="num" id="sCollectors">1,248</div><div class="trend">↑ 8.4% this month</div></div>
+<div class="card stat"><div class="label">Lots Today</div><div class="num" id="sLots">86</div><div class="trend">12 awaiting handover</div></div>
+<div class="card stat"><div class="label">Verified Recyclers</div><div class="num">74</div><div class="trend">6 currently available</div></div>
+<div class="card stat"><div class="label">Collector Earnings</div><div class="num">₹4.82L</div><div class="trend">↑ 11.2% this month</div></div>
+</div>
+<div class="two">
+<div class="card"><h3>Live Traceability</h3><div class="timeline">
+<div class="event"><b>Collection</b><div class="muted">LOT-10245 • E-waste • 18 kg • 4:05 PM</div></div>
+<div class="event"><b>Pickup scheduled</b><div class="muted">Recycler R-014 • 4:30 PM</div></div>
+<div class="event"><b>Handover verification</b><div class="muted">GPS + timestamp + photo verified</div></div>
+<div class="event"><b>Processing</b><div class="muted">Awaiting recycler confirmation</div></div>
+</div></div>
+<div class="card"><h3>Today's Material Mix</h3>
+<div class="kpi">E-waste</div><div class="bar"><i style="width:72%"></i></div>
+<div class="kpi">Metal</div><div class="bar"><i style="width:56%"></i></div>
+<div class="kpi">Plastic</div><div class="bar"><i style="width:43%"></i></div>
+<div class="kpi">Paper/Cardboard</div><div class="bar"><i style="width:31%"></i></div>
+</div></div>
+<div class="three">
+<div class="card"><h3>Current Price Board</h3><div class="muted">Hyderabad • demo rates</div><p>Aluminium <b>₹180/kg</b></p><p>Copper <b>₹720/kg</b></p><p>PCB <b>₹420/kg</b></p><p>Cardboard <b>₹12/kg</b></p><button class="btn secondary" onclick="go('prices')">View all prices</button></div>
+<div class="card"><h3>Pickup Availability</h3><p>🟢 6 recyclers available</p><p>🟡 4 busy</p><p>🔴 2 offline</p><button class="btn" onclick="go('pickups')">Schedule pickup</button></div>
+<div class="card"><h3>AI Alerts</h3><p>⚠ 2 possible duplicate lots</p><p>⚠ 1 abnormal price quote</p><p>✓ 8 material images classified</p><button class="btn secondary" onclick="go('ai')">Open AI center</button></div>
+</div>
+</section>
+
+<section id="collectors" class="page">
+<div class="card"><div class="search"><input class="input" placeholder="Search collector by name / ID" oninput="filterTable(this,'collectorTable')"><button class="btn" onclick="toast('Collector registration form opened')">+ Register Collector</button></div>
+<div class="table-wrap"><table class="table" id="collectorTable"><thead><tr><th>ID</th><th>Name</th><th>Language</th><th>Area</th><th>Lots</th><th>Earnings</th><th>Status</th></tr></thead><tbody>
+<tr><td>C-1001</td><td>Ramesh Kumar</td><td>Hindi</td><td>Hyderabad</td><td>42</td><td>₹18,450</td><td><span class="badge ok">Active</span></td></tr>
+<tr><td>C-1002</td><td>Savita Pawar</td><td>Marathi</td><td>Pune</td><td>36</td><td>₹15,220</td><td><span class="badge ok">Active</span></td></tr>
+<tr><td>C-1003</td><td>Imran Shaikh</td><td>Hindi</td><td>Hyderabad</td><td>19</td><td>₹8,740</td><td><span class="badge pending">Sync Pending</span></td></tr>
+</tbody></table></div></div>
+</section>
+
+<section id="lots" class="page">
+<div class="two">
+<div class="card"><h3>Create Digital Lot</h3><div class="formgrid">
+<div class="field"><label>Collector</label><select class="select"><option>C-1001 — Ramesh Kumar</option><option>C-1002 — Savita Pawar</option></select></div>
+<div class="field"><label>Material</label><select class="select" id="material"><option>PCB</option><option>Cable</option><option>Battery</option><option>CRT</option><option>LCD</option><option>Plastic</option><option>Metal</option><option>Paper/Cardboard</option></select></div>
+<div class="field"><label>Approx. Weight (kg)</label><input class="input" id="weight" type="number" value="10"></div>
+<div class="field"><label>Photo</label><input class="input" id="photo" type="file" accept="image/*" onchange="previewPhoto(this)"></div>
+<div class="field full"><label>GPS verification</label><div class="actions"><button class="btn secondary" onclick="getGPS()">Capture GPS</button><span id="gpsStatus" class="muted">Not captured</span></div></div>
+<div class="field full"><div id="photoPreview" class="notice">Photo-based scrap entry: upload a scrap photo for AI identification.</div></div>
+<div class="field full"><button class="btn" onclick="createLot()">Create Lot + Generate QR</button></div>
+</div></div>
+<div class="card"><h3>Lot Verification</h3><div id="lotResult" class="notice">Create a lot to generate a unique QR/lot ID and verification record.</div><div class="qrbox"><div id="qrcode" class="qr"></div><div id="lotMeta"></div></div></div>
+</div>
+<div class="card" style="margin-top:16px"><h3>Recent Lots</h3><table class="table"><tr><th>Lot ID</th><th>Material</th><th>Weight</th><th>Value</th><th>Verification</th><th>Status</th></tr>
+<tr><td>LOT-10245</td><td>E-waste</td><td>18 kg</td><td>₹7,560</td><td>GPS ✓ Photo ✓ Time ✓</td><td><span class="badge pending">Pickup</span></td></tr>
+<tr><td>LOT-10244</td><td>Aluminium</td><td>12 kg</td><td>₹2,160</td><td>GPS ✓ Photo ✓ Time ✓</td><td><span class="badge ok">Handover</span></td></tr>
+<tr><td>LOT-10243</td><td>PCB</td><td>7 kg</td><td>₹2,940</td><td>GPS ✓ Photo ✓ Time ✓</td><td><span class="badge ok">Paid</span></td></tr></table></div>
+</section>
+
+<section id="recyclers" class="page">
+<div class="two"><div class="card"><h3>Authorized Recycler Map</h3><div class="map"><div class="pin" style="left:25%;top:35%"><span>1</span></div><div class="pin" style="left:55%;top:55%"><span>2</span></div><div class="pin" style="left:72%;top:25%"><span>3</span></div></div><p class="muted">Map view is represented in this offline prototype. Connect Google Maps/OpenStreetMap for live deployment.</p></div>
+<div class="card"><h3>Recycler Matching</h3><p><b>LOT-10245 • 18 kg E-waste</b></p><div class="feature"><b>♻ GreenCycle Recycling</b><p>2.8 km • Verified • Pickup 4:30 PM • ₹410/kg</p><button class="btn" onclick="toast('Recycler selected')">Select</button></div><div class="feature" style="margin-top:10px"><b>♻ EcoLoop Recyclers</b><p>4.1 km • Verified • Pickup 5:00 PM • ₹395/kg</p><button class="btn secondary" onclick="toast('Offer saved for comparison')">Compare</button></div></div></div>
+<div class="card" style="margin-top:16px"><h3>Verified Recycler Directory</h3><table class="table"><tr><th>Recycler</th><th>Materials</th><th>Distance</th><th>Offer</th><th>Pickup</th><th>Verification</th></tr><tr><td>GreenCycle Recycling</td><td>E-waste, PCB</td><td>2.8 km</td><td>₹410/kg</td><td>Available</td><td><span class="badge ok">✓ Authorized</span></td></tr><tr><td>EcoLoop Recyclers</td><td>Metal, E-waste</td><td>4.1 km</td><td>₹395/kg</td><td>Available</td><td><span class="badge ok">✓ Authorized</span></td></tr><tr><td>Metro Scrap Hub</td><td>Metal, Plastic</td><td>6.2 km</td><td>₹365/kg</td><td>Busy</td><td><span class="badge ok">✓ Authorized</span></td></tr></table></div>
+</section>
+
+<section id="prices" class="page">
+<div class="grid"><div class="card stat"><div class="label">Copper</div><div class="price">₹720/kg</div><div class="trend">↑ 4.2%</div></div><div class="card stat"><div class="label">Aluminium</div><div class="price">₹180/kg</div><div class="trend">↑ 1.8%</div></div><div class="card stat"><div class="label">PCB</div><div class="price">₹420/kg</div><div class="trend">↓ 2.1%</div></div><div class="card stat"><div class="label">Cardboard</div><div class="price">₹12/kg</div><div class="trend">→ 0.0%</div></div></div>
+<div class="two"><div class="card"><h3>Historical Price Trend</h3><div style="height:230px;display:flex;align-items:end;gap:8px;padding:15px;border-bottom:1px solid var(--line)"><i style="height:35%;flex:1;background:#d7eae3"></i><i style="height:50%;flex:1;background:#c0dfd5"></i><i style="height:43%;flex:1;background:#b0d8cb"></i><i style="height:64%;flex:1;background:#91c9b7"></i><i style="height:58%;flex:1;background:#72bba5"></i><i style="height:77%;flex:1;background:#4fa78c"></i><i style="height:71%;flex:1;background:#2d9474"></i></div><p class="muted">Demo visualization — connect a verified price feed for production.</p></div>
+<div class="card"><h3>Price Comparison</h3><p>LOT-10245 • E-waste • 18 kg</p><table class="table"><tr><th>Recycler</th><th>Offer/kg</th><th>Total</th></tr><tr><td>GreenCycle</td><td>₹410</td><td>₹7,380</td></tr><tr><td>EcoLoop</td><td>₹395</td><td>₹7,110</td></tr><tr><td>Metro Hub</td><td>₹365</td><td>₹6,570</td></tr></table></div></div>
+</section>
+
+<section id="pickups" class="page">
+<div class="card"><h3>Pickup Scheduling</h3><div class="formgrid"><div class="field"><label>Lot</label><select class="select"><option>LOT-10245 — E-waste — 18 kg</option><option>LOT-10244 — Aluminium — 12 kg</option></select></div><div class="field"><label>Recycler</label><select class="select"><option>GreenCycle Recycling — 2.8 km</option><option>EcoLoop Recyclers — 4.1 km</option></select></div><div class="field"><label>Date</label><input class="input" type="date"></div><div class="field"><label>Time</label><input class="input" type="time" value="16:30"></div><div class="field full"><button class="btn" onclick="toast('Pickup scheduled successfully')">Schedule Pickup</button></div></div></div>
+<div class="card" style="margin-top:16px"><h3>Live Recycler Availability</h3><table class="table"><tr><th>Recycler</th><th>Status</th><th>Next slot</th><th>Action</th></tr><tr><td>GreenCycle Recycling</td><td><span class="badge ok">Available</span></td><td>4:30 PM</td><td><button class="btn">Book</button></td></tr><tr><td>EcoLoop Recyclers</td><td><span class="badge ok">Available</span></td><td>5:00 PM</td><td><button class="btn">Book</button></td></tr><tr><td>Metro Scrap Hub</td><td><span class="badge pending">Busy</span></td><td>Tomorrow</td><td><button class="btn secondary">Notify me</button></td></tr></table></div>
+</section>
+
+<section id="transactions" class="page">
+<div class="grid"><div class="card stat"><div class="label">Pending Payments</div><div class="num">₹18,420</div></div><div class="card stat"><div class="label">Paid This Month</div><div class="num">₹4.82L</div></div><div class="card stat"><div class="label">UPI</div><div class="num">82%</div></div><div class="card stat"><div class="label">Cash</div><div class="num">18%</div></div></div>
+<div class="card" style="margin-top:16px"><h3>Earnings Ledger & Transaction History</h3><table class="table"><tr><th>Transaction</th><th>Collector</th><th>Lot</th><th>Amount</th><th>Mode</th><th>Receipt</th><th>Status</th></tr><tr><td>TX-9001</td><td>Ramesh</td><td>LOT-10243</td><td>₹2,940</td><td>UPI</td><td><button class="btn secondary" onclick="toast('Digital receipt generated')">Receipt</button></td><td><span class="badge ok">Paid</span></td></tr><tr><td>TX-9002</td><td>Savita</td><td>LOT-10244</td><td>₹2,160</td><td>Cash</td><td><button class="btn secondary">Receipt</button></td><td><span class="badge pending">Pending sync</span></td></tr></table></div>
+</section>
+
+<section id="ai" class="page">
+<div class="notice"><b>AI Center:</b> prototype inference is simulated for demonstration. Production can connect Python/FastAPI models.</div>
+<div class="feature-grid" style="margin-top:15px">
+<div class="feature"><b>⭐ AI Scrap Identification</b><p>Photo → PCB/Cable/Battery/CRT/LCD/etc.</p><button class="btn secondary" onclick="aiDemo('Material identified: PCB (92% confidence)')">Run demo</button></div>
+<div class="feature"><b>⭐ AI Price Estimation</b><p>Material + weight + location + current price.</p><button class="btn secondary" onclick="aiDemo('Estimated value: ₹7,560')">Run demo</button></div>
+<div class="feature"><b>⭐ AI Recycler Recommendation</b><p>Distance + offer + authorization + pickup.</p><button class="btn secondary" onclick="aiDemo('Recommended: GreenCycle — verified, 2.8 km, ₹410/kg')">Run demo</button></div>
+<div class="feature"><b>⭐ AI Price Prediction</b><p>Predict possible short-term price movement.</p><button class="btn secondary" onclick="aiDemo('Demo prediction: stable-to-increasing trend')">Run demo</button></div>
+<div class="feature"><b>⭐ Fraud / Abnormal Price Detection</b><p>Flags unusually high/low recycler quotes.</p><button class="btn secondary" onclick="aiDemo('Flagged: ₹210/kg is 31% below peer offers')">Run demo</button></div>
+<div class="feature"><b>AI Scrap Condition Detection</b><p>Image-based condition estimate.</p><button class="btn secondary" onclick="aiDemo('Condition: mixed/used — verification recommended')">Run demo</button></div>
+<div class="feature"><b>AI Mixed-Scrap Detection</b><p>Detect multiple materials in one image.</p><button class="btn secondary" onclick="aiDemo('Detected: PCB + cable + plastic casing')">Run demo</button></div>
+<div class="feature"><b>AI Voice Assistant</b><p>Hindi/Marathi questions about prices and workflow.</p><button class="btn secondary" onclick="startVoice()">🎙 Speak</button></div>
+<div class="feature"><b>AI Safety Assistant</b><p>Safety answers for batteries, CRTs, burning, etc.</p><button class="btn secondary" onclick="aiDemo('Safety: do not break batteries or burn e-waste; hand over to authorized recycler.')">Ask</button></div>
+<div class="feature"><b>AI Best-Sale Recommendation</b><p>Compare available offers and suggest a sale route.</p><button class="btn secondary" onclick="aiDemo('Demo: GreenCycle gives the highest available offer.')">Run demo</button></div>
+<div class="feature"><b>AI Duplicate Lot Detection</b><p>Image hash + material + weight + GPS/time similarity.</p><button class="btn secondary" onclick="aiDemo('Possible duplicate: LOT-10241 — 94% image similarity')">Scan</button></div>
+<div class="feature"><b>AI Recycler Reliability</b><p>Transaction history → reliability indicators.</p><button class="btn secondary" onclick="aiDemo('GreenCycle: 96% on-time confirmations in demo history')">Analyze</button></div>
+<div class="feature"><b>AI Earnings Prediction</b><p>Estimate monthly earnings from transaction history.</p><button class="btn secondary" onclick="aiDemo('Projected demo monthly earnings: ₹24,800')">Predict</button></div>
+<div class="feature"><b>AI Personalized Price Alerts</b><p>Notify collectors when preferred materials move.</p><button class="btn secondary" onclick="aiDemo('Alert rule created for PCB and copper')">Create alert</button></div>
+</div>
+<div id="aiOutput" class="card" style="margin-top:15px"><b>AI result:</b> choose a feature above.</div>
+</section>
+
+<section id="safety" class="page">
+<div class="two"><div class="card"><h3>Safety Guidance</h3><div class="feature"><b>🔋 Batteries</b><p>Do not puncture, crush, burn or mix damaged batteries. Isolate and hand over through authorized channels.</p></div><div class="feature"><b>🖥 CRT/LCD</b><p>Avoid breaking screens. Use gloves and safe handling; send to authorized recyclers.</p></div><div class="feature"><b>🔥 No Burning</b><p>Do not burn cables, plastic or e-waste. Use formal recycling channels.</p></div><div class="feature"><b>🧤 PPE</b><p>Use gloves, closed footwear and eye protection when handling hazardous scrap.</p></div></div>
+<div class="card"><h3>Voice Assistant</h3><div class="voice"><button class="btn" onclick="startVoice()">🎙 Start</button><button class="btn secondary" onclick="speak('Safety guidance is available in Hindi, Marathi and English.')">🔊 Speak</button></div><p class="muted">Uses browser speech APIs where supported.</p><h3 style="margin-top:20px">Emergency / Safety</h3><button class="btn danger" onclick="toast('Emergency action: call local emergency services or your designated safety contact.')">Emergency / Safety Button</button></div></div>
+</section>
+
+<section id="analytics" class="page">
+<div class="grid"><div class="card stat"><div class="label">Material Diverted</div><div class="num">128.4 t</div></div><div class="card stat"><div class="label">Lots Processed</div><div class="num">8,420</div></div><div class="card stat"><div class="label">Estimated CO₂ Avoided</div><div class="num">214 t</div></div><div class="card stat"><div class="label">Verified Handover</div><div class="num">96.8%</div></div></div>
+<div class="two"><div class="card"><h3>Transaction Analytics</h3><table class="table"><tr><th>Metric</th><th>This month</th><th>Change</th></tr><tr><td>Collections</td><td>8,420</td><td>+12%</td></tr><tr><td>Pickups</td><td>7,980</td><td>+9%</td></tr><tr><td>Handover confirmations</td><td>7,710</td><td>+14%</td></tr><tr><td>Disputes</td><td>74</td><td>-6%</td></tr></table></div>
+<div class="card"><h3>Collector Rewards</h3><p>🏅 50 verified handovers — Bronze</p><p>🏅 100 verified handovers — Silver</p><p>🏅 250 verified handovers — Gold</p><p>🎁 Referral bonus: demo rule enabled</p></div></div>
+<div class="card" style="margin-top:16px"><h3>Public / Community Recycling</h3><p class="muted">Public view can expose aggregated, non-personal recycling impact and community drives without exposing collector PII.</p><div class="actions"><button class="btn" onclick="toast('Community recycling page opened')">Open public view</button><button class="btn secondary" onclick="toast('Referral link generated')">Generate referral</button></div></div>
+</section>
+
+<section id="admin" class="page">
+<div class="feature-grid"><div class="feature"><b>Recycler Verification</b><p>Approve documents and show verified badge.</p><button class="btn secondary">Review 6</button></div><div class="feature"><b>Dispute Management</b><p>Review complaints, evidence and outcomes.</p><button class="btn secondary">Open 4</button></div><div class="feature"><b>Validated Recycler History</b><p>See confirmations, disputes and processing history.</p><button class="btn secondary">View</button></div><div class="feature"><b>Offline Sync Monitor</b><p>Pending transaction queue and sync status.</p><button class="btn secondary">3 pending</button></div><div class="feature"><b>Price Feed Management</b><p>Manage source/date/market price records.</p><button class="btn secondary">Manage</button></div><div class="feature"><b>Roles & Permissions</b><p>Collector, recycler and admin access control.</p><button class="btn secondary">Configure</button></div></div>
+<div class="card" style="margin-top:16px"><h3>System Audit Log</h3><table class="table"><tr><th>Time</th><th>Actor</th><th>Action</th><th>Status</th></tr><tr><td>16:21</td><td>Ramesh</td><td>Created LOT-10245</td><td><span class="badge ok">Verified</span></td></tr><tr><td>16:24</td><td>System</td><td>AI duplicate scan</td><td><span class="badge pending">Review</span></td></tr><tr><td>16:28</td><td>GreenCycle</td><td>Accepted pickup</td><td><span class="badge ok">Confirmed</span></td></tr></table></div>
+</section>
+
+<section id="settings" class="page">
+<div class="card"><h3>Prototype Settings</h3><div class="formgrid"><div class="field"><label>Default language</label><select class="select"><option>English</option><option>Hindi</option><option>Marathi</option></select></div><div class="field"><label>Low-data mode</label><select class="select"><option>Enabled</option><option>Disabled</option></select></div><div class="field"><label>Image upload</label><select class="select"><option>Compressed WebP</option><option>Original</option></select></div><div class="field"><label>Offline sync</label><select class="select"><option>Automatic</option><option>Manual</option></select></div></div><p class="notice" style="margin-top:15px">Production deployment: connect FastAPI + PostgreSQL + object storage + authentication + maps + verified recycler/price feeds. This front-end is designed so every core module is reachable from the dashboard.</p></div>
+</section>
+<div id="toast" class="toast"></div>
+</main></div>
+<script>
+const titles={dashboard:'Dashboard',collectors:'Collectors',lots:'Digital Lots',recyclers:'Authorized Recyclers',prices:'Prices & Trends',pickups:'Pickup Scheduling',transactions:'Transactions',ai:'AI Features',safety:'Safety & Voice',analytics:'Analytics & Environmental Impact',admin:'Admin Dashboard',settings:'Settings'};
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>go(b.dataset.page));
+function go(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));document.getElementById('title').textContent=titles[id];window.scrollTo({top:0,behavior:'smooth'})}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';setTimeout(()=>t.style.display='none',2600)}
+function filterTable(input,id){const q=input.value.toLowerCase();document.querySelectorAll('#'+id+' tbody tr').forEach(r=>r.style.display=r.innerText.toLowerCase().includes(q)?'':'none')}
+function getGPS(){if(navigator.geolocation){navigator.geolocation.getCurrentPosition(p=>{document.getElementById('gpsStatus').textContent=`Captured: ${p.coords.latitude.toFixed(5)}, ${p.coords.longitude.toFixed(5)}`;toast('GPS captured')},()=>{document.getElementById('gpsStatus').textContent='Demo GPS unavailable; use device permission'})}else toast('Geolocation not supported')}
+function previewPhoto(inp){const f=inp.files[0];if(!f)return;const url=URL.createObjectURL(f);document.getElementById('photoPreview').innerHTML=`<img src="${url}" style="max-width:180px;max-height:120px;border-radius:10px"><div class="small">Photo captured • ready for AI identification</div>`}
+function createLot(){const material=document.getElementById('material').value,weight=Number(document.getElementById('weight').value)||0;const id='LOT-'+Math.floor(10000+Math.random()*89999);const price={PCB:420,Cable:250,Battery:150,CRT:100,LCD:180,Plastic:35,Metal:180,'Paper/Cardboard':12}[material]||100;const value=Math.round(weight*price);document.getElementById('lotResult').innerHTML=`<b>${id}</b><br>AI material: ${material} • ${weight} kg<br>Estimated value: <b>₹${value.toLocaleString()}</b><br>GPS ✓ • Timestamp ✓ • Photo verification ✓<br><span class="badge pending">AI duplicate scan pending</span>`;document.getElementById('lotMeta').innerHTML=`<b>QR / Unique Lot ID</b><div class="muted">${id}</div>`;const q=document.getElementById('qrcode');q.innerHTML='';new QRCode(q,{text:id,width:120,height:120});toast('Digital lot created')}
+function aiDemo(msg){document.getElementById('aiOutput').innerHTML='<b>AI result:</b> '+msg}
+function speak(text){if('speechSynthesis' in window){speechSynthesis.cancel();speechSynthesis.speak(new SpeechSynthesisUtterance(text))}else toast('Speech synthesis is not supported')}
+function startVoice(){if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)){toast('Speech recognition not supported in this browser');return}const R=window.SpeechRecognition||window.webkitSpeechRecognition;const r=new R();r.lang='hi-IN';r.onresult=e=>{const q=e.results[0][0].transcript;aiDemo('Voice query: “'+q+'” → Demo response: current PCB price is ₹420/kg.');speak('Current PCB price is four hundred twenty rupees per kilogram.');};r.start();toast('Listening…')}
+</script>
+</body></html>

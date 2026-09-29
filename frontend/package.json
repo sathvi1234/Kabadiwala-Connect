@@ -1,0 +1,48 @@
+{
+  "name": "kabadiwala-connect",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "dexie": "^4.0.11",
+    "driver.js": "^1.8.0",
+    "framer-motion": "^13.4.5",
+    "html5-qrcode": "^2.3.8",
+    "i18next": "^24.2.2",
+    "jspdf": "^2.5.2",
+    "leaflet": "^1.9.4",
+    "lucide-react": "^1.48.0",
+    "qrcode": "^1.5.4",
+    "react": "^18.3.1",
+    "react-countup": "^6.5.3",
+    "react-dom": "^18.3.1",
+    "react-i18next": "^15.4.0",
+    "react-leaflet": "^4.2.1",
+    "react-router-dom": "^6.30.0",
+    "recharts": "^2.15.1",
+    "sonner": "^2.0.8"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.50.1",
+    "@types/leaflet": "^1.9.16",
+    "@types/qrcode": "^1.5.5",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.20",
+    "jsdom": "^26.0.0",
+    "postcss": "^8.5.1",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.3",
+    "vite": "^6.1.0",
+    "vite-plugin-pwa": "^0.21.1",
+    "vitest": "^3.0.5"
+  }
+}
