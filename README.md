@@ -1,133 +1,445 @@
-# Kabadiwala Connect
+# ♻️ Kabadiwala Connect
 
-SIH 2026, problem statement 26229. Collectors record scrap lots, see live prices, and hand material to authorized recyclers with GPS, time, photo, and QR verification. Recyclers and admins have separate logins.
+Kabadiwala Connect is a digital platform that connects informal scrap and e-waste collectors (kabadiwalas) with authorized recyclers through verified digital lots, transparent prices, and a traceable handover process. Built for Smart India Hackathon 2026, Problem Statement PS 26229.
 
-The visual reference is `reference/prototype.html`. The working app is the React client in `frontend/` and the FastAPI service in `backend/`.
+Live Demo: https://sih-tawny-sigma-38.vercel.app/
 
-## Run locally (Windows)
+---
 
-Requirements: Python 3.12+ and Node 20+.
+## 📑 Table of Contents
 
-```powershell
-copy .env.example .env
-cd backend
-python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-.\.venv\Scripts\python.exe -m alembic upgrade head
-.\.venv\Scripts\python.exe seed.py
-.\.venv\Scripts\python.exe -m uvicorn app.main:app --reload --port 8000
+- About
+- How It Works
+- Real-World Use Cases
+- Features
+- Tech Stack
+- File Tree
+- Getting Started
+- Usage
+- Authentication
+- Rate Limiting
+- API Reference
+- Error Handling
+- Testing
+- Deployment
+- License
+
+---
+
+## 🧾 About
+
+**Tagline: From scrap to verified sale, in one traceable flow.**
+
+Kabadiwala Connect is a mobile-first, offline-capable platform that lets collectors register scrap as digital lots, get an instant value estimate, compare offers from nearby authorized recyclers, schedule pickups, and complete a verified handover with a digital receipt. Recyclers get a dashboard to manage incoming lots, offers, and payments. Admins verify recyclers, manage the price feed, and resolve disputes.
+
+The platform is designed for collectors, authorized recyclers, and administrators. It supports English, Hindi, and Marathi, and adds AI features such as scrap identification from a photo, price prediction, abnormal price detection, and a voice assistant.
+
+---
+
+## ⚙️ How It Works
+
+```
+Collector -> Digital Lot -> Recycler Match -> Pickup -> Handover -> Payment -> Processing
 ```
 
-In a second terminal:
+Request lifecycle:
 
-```powershell
+```
+Client Request
+    |
+    v
+Rate Limiter -> Auth Middleware -> Validator -> Router -> Service -> Database
+    |
+    v
+JSON Response (success or structured error)
+```
+
+- Collection: The collector captures a photo, selects or confirms the material, enters an approximate weight, and creates a lot with a unique ID and QR code.
+- Estimation: The value is calculated from the weight and the current price feed for the material and city.
+- Matching: Authorized recyclers are ranked by distance, offer price, availability, and rating.
+- Pickup and Handover: The recycler confirms the pickup. At handover, GPS, timestamp, and photo are recorded and verified.
+- Payment: Cash, UPI reference, or bank transfer is recorded, and a digital receipt is generated.
+- Traceability: Every step is stored as a lot event, so the full timeline (Collection, Pickup, Handover, Recycler, Processing) is visible.
+- Offline-first: Lots created without internet are stored in a local queue and synced automatically when the connection returns.
+
+---
+
+## 💼 Real-World Use Cases
+
+- Informal Collectors: A kabadiwala checks live prices, records a lot on a low-end phone, and sells to a verified recycler at a fair rate.
+- Authorized Recyclers: A recycling unit receives verified lots, sets material-wise offers, and confirms handovers with QR scanning.
+- Municipal and Regulatory Bodies: Admins track verified handover rates, recycler authorization, and environmental impact.
+- Communities and NGOs: Aggregated, non-personal data supports community recycling drives and awareness.
+
+---
+
+## ✨ Features
+
+Core features:
+
+- Collector registration and profile
+- Marathi, Hindi, and English support
+- Photo-based scrap entry with client-side compression
+- Material categorization and approximate weight entry
+- Digital lot creation with QR and unique lot ID
+- Instant scrap value estimation
+- Current price board and historical price trends
+- Nearby authorized recycler search and recycler matching
+- Recycler price comparison and pickup availability
+- Digital handover record with GPS, timestamp, and photo verification
+- Recycler confirmation
+- Cash and digital payment recording
+- Earnings ledger and transaction history
+- Safety guidance
+- Offline-first functionality with automatic data synchronization
+- Recycler dashboard and admin dashboard
+
+AI features:
+
+- AI scrap identification
+- AI price estimation
+- AI recycler recommendation
+- AI price prediction
+- Fraud and abnormal price detection
+- Scrap condition detection
+- Mixed-scrap detection
+- AI voice assistant (Hindi and Marathi)
+- AI safety assistant
+- Best-sale recommendation
+- Duplicate lot detection
+- Recycler reliability prediction
+- Earnings prediction
+- Personalized price alerts
+
+Additional features:
+
+- QR-based lot tracking and complete traceability timeline
+- Recycler verification badge
+- Recycler rating and feedback
+- Dispute and complaint system
+- Digital payment receipt and digital handover certificate
+- Pending payment tracker
+- Offline transaction queue and automatic sync
+- Low-data mode and compressed image upload
+- Audio tutorials and pictorial safety instructions
+- Emergency and safety button
+- Transaction analytics and environmental impact dashboard
+- Validated recycler history
+- Collector achievement and reward system
+- Referral system
+- Multi-language voice and audio navigation
+- Public community recycling map
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Frontend | React, Vite, TypeScript, Tailwind CSS |
+| App Type | Progressive Web App (installable, offline-capable) |
+| Offline Storage | IndexedDB (Dexie), Workbox |
+| Backend | Python, FastAPI |
+| Validation | Pydantic |
+| ORM | SQLAlchemy, Alembic |
+| Database | PostgreSQL (SQLite for local development) |
+| Auth | JWT with role-based access (collector, recycler, admin) |
+| Maps | Leaflet, OpenStreetMap |
+| Charts | Recharts |
+| i18n | react-i18next (English, Hindi, Marathi) |
+| Voice | Web Speech API |
+| AI | Vision model or zero-shot CLIP, scikit-learn, rule-based fallbacks |
+| QR | qrcode, html5-qrcode |
+| Deployment | Vercel (frontend), Docker |
+
+---
+
+## 📂 File Tree
+
+```
+kabadiwala-connect/
+├── frontend/
+│   ├── src/
+│   │   ├── pages/          # Landing, auth, collector, recycler, admin
+│   │   ├── components/     # Shared UI components
+│   │   ├── offline/        # IndexedDB, sync queue
+│   │   ├── i18n/           # en, hi, mr translation files
+│   │   └── hooks/          # Voice, GPS, sync helpers
+│   └── vite.config.ts
+├── backend/
+│   ├── app/
+│   │   ├── routers/        # Route handlers
+│   │   ├── models/         # SQLAlchemy models
+│   │   ├── schemas/        # Pydantic schemas
+│   │   ├── services/       # Business logic
+│   │   ├── ai/             # AI endpoints and fallbacks
+│   │   └── core/           # Auth, config, rate limiting
+│   ├── alembic/
+│   ├── seed.py
+│   └── tests/
+├── reference/
+│   └── prototype.html
+├── docker-compose.yml
+├── .env.example
+└── README.md
+```
+
+---
+
+## 🏁 Getting Started
+
+```
+git clone https://github.com/your-username/kabadiwala-connect.git
+cd kabadiwala-connect
+cp .env.example .env
+```
+
+Backend:
+
+```
+cd backend
+pip install -r requirements.txt
+alembic upgrade head
+python seed.py
+uvicorn app.main:app --reload
+```
+
+Frontend:
+
+```
 cd frontend
 npm install
 npm run dev
 ```
 
-Open http://localhost:5173. The public landing page is `/`. Log in at `/login`, or use a demo card. The API is http://localhost:8000 (interactive docs at `/docs`).
+The backend runs on http://localhost:8000 and the frontend on http://localhost:5173.
 
-`DEMO_MODE=true` (the default in development) enables `POST /api/auth/demo-login`. Demo accounts are flagged `is_demo`, cannot change a password or delete price rows, and an admin can restore seeded lots with Reset demo. Set `DEMO_NIGHTLY_RESET=true` only if a 03:00 reset should run.
+Or run everything with Docker:
 
-SQLite is the default database (`backend/kabadiwala.db`). In development the API also creates tables and seeds on startup if the database is empty.
-
-### Demo accounts
-
-Password for every seeded account: `Demo@123`
-
-| Role | Phone | Notes |
-| --- | --- | --- |
-| Admin | 9999999999 | Approves recyclers, prices, disputes |
-| Collector | 9000000001 | Ramesh Kumar, Hindi, Hyderabad |
-| Collector | 9000000002 | Savita Pawar, Marathi, Pune |
-| Collector | 9000000003 | Imran Shaikh, referred by Ramesh |
-| Recycler | 9000000011 | GreenCycle Recycling, approved |
-| Recycler | 9000000012 | EcoLoop Recyclers, approved |
-| Recycler | 9000000013 | Metro Scrap Hub, approved, busy |
-| Recycler | 9000000014 | Pending Scrap Co, waiting for admin |
-
-Registration OTP in development is `123456` and is also returned as `dev_otp`. There is no SMS provider. Outside `ENV=development` the code is random and only logged, not returned.
-
-## Docker
-
-```powershell
-docker compose up --build
+```
+docker-compose up --build
 ```
 
-- API: http://localhost:8000
-- Web: http://localhost:8080
-- Postgres: localhost:5432 (`kabadi` / `kabadi` / `kabadiwala`)
+---
 
-Set `DATABASE_URL=postgresql+psycopg://kabadi:kabadi@localhost:5432/kabadiwala` in `.env` if you want the local API to use that database instead of SQLite.
+## 💡 Usage
 
-## Tests
+Try the live demo: https://sih-tawny-sigma-38.vercel.app/
 
-```powershell
+On the login page, click one of the demo user cards to enter a dashboard directly:
+
+- Collector demo: create lots, see prices, get matched with recyclers
+- Recycler demo: receive lots, set offers, confirm handovers
+- Admin demo: verify recyclers, manage prices, resolve disputes
+
+Make your first request:
+
+```
+# Get current prices (public endpoint)
+curl https://your-api-url/api/v1/prices
+
+# Create a lot (authenticated)
+curl -X POST https://your-api-url/api/v1/lots \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -H "Idempotency-Key: 7c9e6679-7425-40de-944b-e07fc1f90ae7" \
+  -d '{"material": "PCB", "weight_kg": 10, "lat": 17.385, "lng": 78.486}'
+```
+
+Voice example: tap the microphone and ask "PCB ka bhav kya hai?" to hear the current PCB price.
+
+---
+
+## 🔑 Authentication
+
+```
+Authorization: Bearer <YOUR_TOKEN>
+```
+
+Collectors log in with phone and OTP. Recyclers and admins log in with email and password. Roles are enforced on both the frontend and backend.
+
+Get a token:
+
+```
+POST /api/v1/auth/login
+Content-Type: application/json
+
+{ "email": "user@example.com", "password": "your_password" }
+```
+
+Response:
+
+```
+{ "accessToken": "eyJ...", "refreshToken": "eyJ...", "expiresIn": 3600 }
+```
+
+Demo login (only when DEMO_MODE=true):
+
+```
+POST /api/v1/auth/demo-login
+Content-Type: application/json
+
+{ "role": "collector" }
+```
+
+---
+
+## 🚦 Rate Limiting
+
+| Tier | Limit |
+|---|---|
+| Public endpoints | 60 req / minute per IP |
+| Authenticated users | 300 req / minute |
+| Demo accounts | 30 req / minute |
+
+Response headers on every request:
+
+```
+X-RateLimit-Limit: 60
+X-RateLimit-Remaining: 55
+X-RateLimit-Reset: 1714000000
+```
+
+---
+
+## 📚 API Reference
+
+Auth
+
+| Method | Endpoint | Description | Auth |
+|---|---|---|---|
+| POST | /api/v1/auth/register | Register collector or recycler | No |
+| POST | /api/v1/auth/login | Log in | No |
+| POST | /api/v1/auth/demo-login | Log in as a demo user | No |
+
+Lots
+
+| Method | Endpoint | Description | Auth |
+|---|---|---|---|
+| GET | /api/v1/lots | List own lots | Yes |
+| POST | /api/v1/lots | Create a digital lot | Yes |
+| GET | /api/v1/lots/:id | Get lot with timeline | Yes |
+| GET | /api/v1/verify/:lotId | Public lot verification | No |
+
+Prices and Recyclers
+
+| Method | Endpoint | Description | Auth |
+|---|---|---|---|
+| GET | /api/v1/prices | Current price board | No |
+| GET | /api/v1/prices/history | Historical prices | No |
+| GET | /api/v1/recyclers/nearby | Nearby authorized recyclers | Yes |
+| POST | /api/v1/pickups | Schedule a pickup | Yes |
+
+Handover and Payments
+
+| Method | Endpoint | Description | Auth |
+|---|---|---|---|
+| POST | /api/v1/handovers | Record and verify a handover | Yes |
+| POST | /api/v1/transactions | Record a payment | Yes |
+| GET | /api/v1/transactions | Transaction history | Yes |
+| GET | /api/v1/receipts/:id | Download a receipt | Yes |
+
+Sync
+
+| Method | Endpoint | Description | Auth |
+|---|---|---|---|
+| POST | /api/v1/sync | Push queued offline actions | Yes |
+
+AI
+
+| Method | Endpoint | Description | Auth |
+|---|---|---|---|
+| POST | /ai/identify | Identify scrap from a photo | Yes |
+| POST | /ai/estimate-price | Estimate scrap value | Yes |
+| POST | /ai/recommend-recycler | Rank recyclers | Yes |
+| POST | /ai/predict-price | Forecast price movement | Yes |
+| POST | /ai/detect-abnormal-price | Flag unusual quotes | Yes |
+| POST | /ai/condition | Estimate scrap condition | Yes |
+| POST | /ai/mixed-scrap | Detect multiple materials | Yes |
+
+Admin
+
+| Method | Endpoint | Description | Auth |
+|---|---|---|---|
+| GET | /api/v1/admin/recyclers/pending | Verification queue | Admin |
+| POST | /api/v1/admin/recyclers/:id/approve | Approve a recycler | Admin |
+| POST | /api/v1/admin/prices | Manage the price feed | Admin |
+| POST | /api/v1/admin/reset-demo | Reset demo data | Admin |
+
+---
+
+## ⚠️ Error Handling
+
+All errors follow a consistent format:
+
+```
+{
+  "error": {
+    "code": "RESOURCE_NOT_FOUND",
+    "message": "The requested lot does not exist.",
+    "status": 404
+  }
+}
+```
+
+| Code | HTTP | Description |
+|---|---|---|
+| UNAUTHORIZED | 401 | Missing or invalid token |
+| FORBIDDEN | 403 | Insufficient permissions |
+| RESOURCE_NOT_FOUND | 404 | Resource does not exist |
+| VALIDATION_ERROR | 422 | Invalid request body or params |
+| DUPLICATE_REQUEST | 409 | Idempotency key already used |
+| RATE_LIMIT_EXCEEDED | 429 | Too many requests |
+| INTERNAL_ERROR | 500 | Unexpected server error |
+
+---
+
+## 🧪 Testing
+
+```
+# Backend
 cd backend
-.\.venv\Scripts\python.exe -m pytest -q
-cd ..\frontend
-npm test
-npm run test:e2e
+pytest
+
+# Frontend
+cd frontend
+npm run test
+
+# End-to-end
+npx playwright test
 ```
 
-Backend tests cover role guards, collector and recycler registration, lot creation, price estimation, sync idempotency, handover GPS/weight flags, partial payment, PDF receipt, and the public verification page. Frontend unit tests check translation key parity and the offline queue helpers. Playwright covers register, create a lot while offline, and sync. The API must be reachable at `http://127.0.0.1:8000` (the Playwright config starts it).
+---
 
-## Demo script
+## 🚢 Deployment
 
-1. Log in as Ramesh (`9000000001` / `Demo@123`). Switch language to Hindi. The choice is saved on the user.
-2. Open Prices. Filter Hyderabad, switch 7d / 30d / 90d / 1y, and run the forecast.
-3. Open Digital Lots. Add a photo (it is compressed to WebP), confirm or change the suggested material, enter weight in kg or g, capture GPS, and create the lot. The QR is the lot id `LOT-YYYYMMDD-xxxx`.
-4. Open the lot. Compare recycler offers. The best net payout is highlighted. Schedule a pickup with GreenCycle.
-5. Log out. Log in as GreenCycle (`9000000011`). Set availability, accept the pickup, scan or open the lot, confirm the weight, then record a partial cash payment and the rest by UPI reference.
-6. Back as the collector, download the receipt PDF and the handover certificate. Rate the recycler.
-7. Turn on airplane mode, create another lot, then go online and press Sync now. The same idempotency key cannot create a duplicate.
-8. Log in as admin. Approve Pending Scrap Co, edit a price, resolve the seeded copper dispute, and open the audit log and sync monitor.
-9. Open http://localhost:5173/verify/LOT-... and http://localhost:5173/community. Those pages do not show collector phone numbers or names.
+Live frontend: https://sih-tawny-sigma-38.vercel.app/
 
-## What is real, and what falls back
+Frontend build:
 
-| Feature | With a key | Without a key |
-| --- | --- | --- |
-| `POST /ai/identify`, `/ai/condition` | `VISION_API_KEY` plus an OpenAI-compatible vision chat URL | Pillow colour and texture heuristic |
-| Voice intent if keywords miss | `LLM_API_KEY` | Keyword and regex matcher for Hindi, Marathi, English, and Hinglish |
-| Price forecast and earnings forecast | scikit-learn linear regression with day-of-year seasonality | Average fallback when history is too short |
-| Abnormal quotes | z-score and IQR on history and peer offers | Same, always local |
-| Payments | Records Cash, UPI reference, or bank reference | No payment gateway |
-| Push | In-app notifications, plus the browser Notification API while the app is open | No VAPID/web-push server |
-| Maps | Leaflet and OpenStreetMap tiles | Low-data mode hides tiles and shows a list |
+```
+cd frontend
+npm run build
+npm run preview
+```
 
-Uploaded files go to `backend/uploads` through `app/storage.py`. Swap that module for S3 by keeping the same `save_upload` / `absolute_path` shape.
+Docker:
 
-## Emission factors
+```
+docker build -t kabadiwala-connect .
+docker run -p 8000:8000 --env-file .env kabadiwala-connect
+```
 
-Diverted weight is summed from lots in `handed_over`, `processing`, or `completed`. CO₂ avoided is `weight_kg × material.co2_factor`. Factors live on the `materials` table and are cited here:
+Set the frontend environment variable to point to your backend API:
 
-| Material | kg CO₂e avoided per kg | Source |
-| --- | --- | --- |
-| Aluminium | 9.0 | International Aluminium Institute, primary versus recycled aluminium |
-| Copper | 4.0 | International Copper Association, energy savings of recycled copper |
-| Metal | 1.8 | US EPA WARM, steel cans / mixed metals, approximate |
-| Plastic | 1.5 | US EPA WARM, mixed plastics recycling versus landfill, approximate |
-| Paper/Cardboard | 0.9 | US EPA WARM, corrugated containers, approximate |
-| Cable | 2.0 | Copper-content share of the ICA copper factor, for mixed cable |
-| Battery | 1.2 | International Lead Association, lead-acid recycling, illustrative |
-| PCB | 2.5 | Illustrative WEEE factor informed by UNU Global E-waste Monitor |
-| LCD | 1.5 | Illustrative flat-panel WEEE factor |
-| CRT | 0.8 | Illustrative intact-CRT handling factor |
+```
+VITE_API_URL=https://your-backend-url
+```
 
-WEEE rows are order-of-magnitude factors for the demo, not a national inventory.
+Environment files containing secrets must not be committed to Git.
 
-## Roles
+---
 
-- Collectors register with phone OTP, language, area, materials, optional ID, and an optional referral code.
-- Recyclers upload a licence and stay `pending` until an admin approves or rejects them. Pending accounts can log in but cannot publish offers or appear in search.
-- Admins manage users, the price feed, disputes, the audit log, and sync.
+## 📄 License
 
-Sensitive actions (verification, payments, disputes, price changes, user updates) are written to `audit_logs`.
-
-## Offline
-
-The collector can create a lot with no network. The lot, compressed photo, cached price list, and recycler list sit in IndexedDB (Dexie). Coming online, or pressing Sync now, posts each item with its client UUID. The server returns the original lot if that key was already used. Price edits from a client are ignored (server wins). Lot drafts that are still `open` accept the client update (client wins). The badge shows Synced, Pending N, or Failed.
-
-The service worker (Workbox via `vite-plugin-pwa`) caches the app shell. Translations are bundled and also selected from `localStorage` key `kabadi_lang`.
+Add the project's actual license here once one has been selected.
